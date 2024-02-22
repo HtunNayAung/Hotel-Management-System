@@ -7,8 +7,10 @@ import javax.swing.JMenuItem;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Dashboard extends JFrame{
+public class Dashboard extends JFrame implements ActionListener{
     public Dashboard(){
         setSize(1280, 720);
         setLocation(100,100);
@@ -35,19 +37,19 @@ public class Dashboard extends JFrame{
         menuBar.add(hotelMng);
 
         JMenuItem reception = new JMenuItem("    Reception    ");
+        reception.addActionListener(this);
         hotelMng.add(reception);
 
-        JMenu admin =  new JMenu("    Admin          ");
+        JMenu admin =  new JMenu("          Admin          ");
         admin.setForeground(Color.BLACK);
         menuBar.add(admin);
 
-        JMenuItem employees = new JMenuItem("Employees");
+        JMenuItem employees = new JMenuItem("Add Employees");
+        employees.addActionListener(this);
         admin.add(employees);
 
-        JMenuItem drivers = new JMenuItem("Drivers");
-        admin.add(drivers);
-
-        JMenuItem rooms = new JMenuItem("Rooms");
+        JMenuItem rooms = new JMenuItem("Add Rooms");
+        rooms.addActionListener(this);
         admin.add(rooms);
 
 
@@ -57,5 +59,14 @@ public class Dashboard extends JFrame{
 
     public static void main(String[] args) {
         new Dashboard();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand().equals("Add Employees")){
+            new AddEmployee();
+        } else if(e.getActionCommand().equals("Add Rooms")){
+            new AddRoom();
+        }
     }
 }

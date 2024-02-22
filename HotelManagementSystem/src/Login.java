@@ -12,10 +12,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Login extends JFrame implements ActionListener{
-    JTextField nameField, pwdField;
+    JTextField nameField;
+    JPasswordField pwdField;
     JButton loginButton, cancelButton;
     public Login(){
         setSize(1280, 720);
@@ -50,7 +52,7 @@ public class Login extends JFrame implements ActionListener{
         pwdLabel.setFont(new Font("serif", Font.PLAIN, 19));
         panel.add(pwdLabel);
 
-        pwdField =  new JTextField();
+        pwdField =  new JPasswordField();
         pwdField.setLocation(220,90);
         pwdField.setSize(150,30);
         panel.add(pwdField);
@@ -92,6 +94,7 @@ public class Login extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == loginButton ){
             String username = nameField.getText();
+            @SuppressWarnings("deprecation")
             String password = pwdField.getText();
             Dbconnect dbconnect = new Dbconnect();
             String query = "select * from login where username = '" + username + "' and password = '" + password + "';";
