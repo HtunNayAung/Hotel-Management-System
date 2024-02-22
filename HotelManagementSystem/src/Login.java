@@ -1,15 +1,23 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class TestLogin extends JFrame{
-    public TestLogin(){
+public class Login extends JFrame implements ActionListener{
+    JTextField nameField, pwdField;
+    JButton loginButton, cancelButton;
+    public Login(){
         setSize(1280, 720);
         setLocation(100,100);
 
@@ -30,7 +38,7 @@ public class TestLogin extends JFrame{
         usernameLabel.setFont(new Font("serif", Font.PLAIN, 19));
         panel.add(usernameLabel);
 
-        JTextField nameField =  new JTextField();
+        nameField =  new JTextField();
         nameField.setLocation(220,40);
         nameField.setSize(150,30);
         panel.add(nameField);
@@ -42,29 +50,31 @@ public class TestLogin extends JFrame{
         pwdLabel.setFont(new Font("serif", Font.PLAIN, 19));
         panel.add(pwdLabel);
 
-        JTextField pwdField =  new JTextField();
+        pwdField =  new JTextField();
         pwdField.setLocation(220,90);
         pwdField.setSize(150,30);
         panel.add(pwdField);
 
         //for login button
-        JButton loginButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Login</span></html>");
+        loginButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Login</span></html>");
         loginButton.setLocation(100,170);
         loginButton.setSize(120,30);
         loginButton.setOpaque(true);
         loginButton.setBorderPainted(false);
         loginButton.setBackground(Color.decode("#424554"));
         loginButton.setForeground(Color.WHITE);
+        loginButton.addActionListener(this);
         panel.add(loginButton);
 
         //for cancel button
-        JButton cancelButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Cancel</span></html>");
+        cancelButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Cancel</span></html>");
         cancelButton.setLocation(250,170);
         cancelButton.setSize(120,30);
         cancelButton.setOpaque(true);
         cancelButton.setBorderPainted(false);
         cancelButton.setBackground(Color.decode("#424554"));
         cancelButton.setForeground(Color.WHITE);
+        cancelButton.addActionListener(this);
         panel.add(cancelButton);
 
 
@@ -75,6 +85,33 @@ public class TestLogin extends JFrame{
     }
 
     public static void main(String[] args) {
-        new TestLogin();
+        new Login();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == loginButton ){
+            String username = nameField.getText();
+            String password = pwdField.getText();
+            Dbconnect dbconnect = new Dbconnect();
+            String query = "select * from login where username = '" + username + "' and password = '" + password + "';";
+            try {
+                Statement stmt = dbconnect.con.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+                if(resultSet.next()){
+                    setVisible(false);
+                    new Dashboard();
+                } else{
+                    JOptionPane.showMessageDialog(null, "Invalid password or username");
+                    setVisible(false);
+                }
+                dbconnect.con.close();
+                
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } else if(e.getSource() == cancelButton){
+            
+        }
     }
 }
