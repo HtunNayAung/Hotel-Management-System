@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -61,6 +62,10 @@ public class AddEmployee extends JFrame implements ActionListener{
         rooms.addActionListener(this);
         admin.add(rooms);
 
+        JMenuItem drivers = new JMenuItem("Add Drivers");
+        drivers.addActionListener(this);
+        admin.add(drivers);
+
         JPanel panel = new JPanel();
         panel.setLocation(400, 100);
         panel.setSize(490, 450);
@@ -110,6 +115,9 @@ public class AddEmployee extends JFrame implements ActionListener{
         femaleRBtn.setFont(new Font("serif", Font.PLAIN, 19));
         panel.add(femaleRBtn);
 
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(maleRBtn);
+        genderGroup.add(femaleRBtn);
 
         //job
         JLabel jobLabel = new JLabel("Job");
@@ -180,9 +188,17 @@ public class AddEmployee extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Add Employees")){
+            setVisible(false);
             new AddEmployee();
         } else if(e.getActionCommand().equals("Add Rooms")){
+            setVisible(false);
             new AddRoom();
+        }  else if(e.getActionCommand().equals("Add Drivers")){
+            setVisible(false);
+            new PickUpService();
+        } else if(e.getActionCommand().equals("    Reception    ")){
+            setVisible(false);
+            new Reception();
         } else if(e.getSource() == submitButton){
             String name = nameField.getText();
 
@@ -221,7 +237,7 @@ public class AddEmployee extends JFrame implements ActionListener{
                     stmt.executeUpdate(query);
                     JOptionPane.showMessageDialog(null, "Employee added successfully");
                     setVisible(false);
-
+                    dbconnect.con.close();
                 } catch (Exception err){
                     System.out.println(err);
                 }

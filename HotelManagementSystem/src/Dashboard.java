@@ -52,6 +52,9 @@ public class Dashboard extends JFrame implements ActionListener{
         rooms.addActionListener(this);
         admin.add(rooms);
 
+        JMenuItem drivers = new JMenuItem("Add Drivers");
+        drivers.addActionListener(this);
+        admin.add(drivers);
 
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,9 +67,17 @@ public class Dashboard extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Add Employees")){
+            setVisible(false);
             new AddEmployee();
         } else if(e.getActionCommand().equals("Add Rooms")){
+            setVisible(false);
             new AddRoom();
+        }  else if(e.getActionCommand().equals("Add Drivers")){
+            setVisible(false);
+            new PickUpService();
+        } else if(e.getActionCommand().equals("    Reception    ")){
+            setVisible(false);
+            new Reception();
         }
     }
 }

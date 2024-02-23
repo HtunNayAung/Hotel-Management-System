@@ -86,10 +86,6 @@ public class Login extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
-        new Login();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == loginButton ){
