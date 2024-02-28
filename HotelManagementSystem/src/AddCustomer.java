@@ -252,8 +252,10 @@ public class AddCustomer extends JFrame implements ActionListener{
                     Statement stmt = dbconnect.con.createStatement();
                     String query = "insert into customer values ('" + name + "','" +idType + "','" + idNum + "','" + gender + "','" + country + "','" + room + "','" + checkinTime + "');";
                     String availUpdateQuery = "update room set availability = 'Occupied' where roomNumber  = '" + room + "';";
+                    String stayQuery = "insert into staying values ('" + name + "','" + room + "');";
                     stmt.executeUpdate(query);
                     stmt.executeUpdate(availUpdateQuery);
+                    stmt.executeUpdate(stayQuery);
                     JOptionPane.showMessageDialog(null, "New customer added successfully");
                     setVisible(false);
                     new AddCustomer();

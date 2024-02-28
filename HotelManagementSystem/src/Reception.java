@@ -12,7 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class Reception extends JFrame implements ActionListener{
-    JButton newCustomerButton, roomButton, departmentButton, employeesButton, customerButton, managerButton, checkoutButton, updateStatusButton, roomStatusButton, pickupButton, searchRoomButton, logoutButton;
+    JButton newCustomerButton, roomButton, departmentButton, employeesButton, customerButton, checkoutButton, updateStatusButton, roomStatusButton, pickupButton, searchRoomButton, logoutButton;
     public Reception(){
         setSize(1280, 720);
         setLocation(100,100);
@@ -57,7 +57,7 @@ public class Reception extends JFrame implements ActionListener{
         panel.setLayout(null);
 
         newCustomerButton = new JButton("New Customer");
-        newCustomerButton.setLocation(10,30);
+        newCustomerButton.setLocation(10,50);
         newCustomerButton.setSize(200,30);
         newCustomerButton.setOpaque(true);
         newCustomerButton.setBorderPainted(false);
@@ -66,62 +66,58 @@ public class Reception extends JFrame implements ActionListener{
         newCustomerButton.addActionListener(this);
         panel.add(newCustomerButton);
 
-        roomButton = new JButton("Rooms");
-        roomButton.setLocation(10,70);
+        roomButton = new JButton("All Rooms");
+        roomButton.setLocation(10,90);
         roomButton.setSize(200,30);
         roomButton.setOpaque(true);
         roomButton.setBorderPainted(false);
         roomButton.setBackground(Color.decode("#424554"));
         roomButton.setForeground(Color.WHITE);
+        roomButton.addActionListener(this);
         panel.add(roomButton);
 
-        departmentButton = new JButton("Departments");
-        departmentButton.setLocation(10,110);
-        departmentButton.setSize(200,30);
-        departmentButton.setOpaque(true);
-        departmentButton.setBorderPainted(false);
-        departmentButton.setBackground(Color.decode("#424554"));
-        departmentButton.setForeground(Color.WHITE);
-        panel.add(departmentButton);
+        // departmentButton = new JButton("Departments");
+        // departmentButton.setLocation(10,110);
+        // departmentButton.setSize(200,30);
+        // departmentButton.setOpaque(true);
+        // departmentButton.setBorderPainted(false);
+        // departmentButton.setBackground(Color.decode("#424554"));
+        // departmentButton.setForeground(Color.WHITE);
+        // departmentButton.addActionListener(this);
+        // panel.add(departmentButton);
 
-        employeesButton = new JButton("Employees");
-        employeesButton.setLocation(10,150);
-        employeesButton.setSize(200,30);
-        employeesButton.setOpaque(true);
-        employeesButton.setBorderPainted(false);
-        employeesButton.setBackground(Color.decode("#424554"));
-        employeesButton.setForeground(Color.WHITE);
-        panel.add(employeesButton);
+        // employeesButton = new JButton("Employees");
+        // employeesButton.setLocation(10,150);
+        // employeesButton.setSize(200,30);
+        // employeesButton.setOpaque(true);
+        // employeesButton.setBorderPainted(false);
+        // employeesButton.setBackground(Color.decode("#424554"));
+        // employeesButton.setForeground(Color.WHITE);
+        // employeesButton.addActionListener(this);
+        // panel.add(employeesButton);
 
         customerButton = new JButton("Customer Info");
-        customerButton.setLocation(10,190);
+        customerButton.setLocation(10,130);
         customerButton.setSize(200,30);
         customerButton.setOpaque(true);
         customerButton.setBorderPainted(false);
         customerButton.setBackground(Color.decode("#424554"));
         customerButton.setForeground(Color.WHITE);
+        customerButton.addActionListener(this);
         panel.add(customerButton);
 
-        managerButton = new JButton("Manager Info");
-        managerButton.setLocation(10,230);
-        managerButton.setSize(200,30);
-        managerButton.setOpaque(true);
-        managerButton.setBorderPainted(false);
-        managerButton.setBackground(Color.decode("#424554"));
-        managerButton.setForeground(Color.WHITE);
-        panel.add(managerButton);
-
         checkoutButton = new JButton("Checkout");
-        checkoutButton.setLocation(10,270);
+        checkoutButton.setLocation(10,170);
         checkoutButton.setSize(200,30);
         checkoutButton.setOpaque(true);
         checkoutButton.setBorderPainted(false);
         checkoutButton.setBackground(Color.decode("#424554"));
         checkoutButton.setForeground(Color.WHITE);
+        checkoutButton.addActionListener(this);
         panel.add(checkoutButton);
 
         updateStatusButton = new JButton("Update Availability");
-        updateStatusButton.setLocation(10,310);
+        updateStatusButton.setLocation(10,210);
         updateStatusButton.setSize(200,30);
         updateStatusButton.setOpaque(true);
         updateStatusButton.setBorderPainted(false);
@@ -130,7 +126,7 @@ public class Reception extends JFrame implements ActionListener{
         panel.add(updateStatusButton);
 
         roomStatusButton = new JButton("Update Room Status");
-        roomStatusButton.setLocation(10,350);
+        roomStatusButton.setLocation(10,250);
         roomStatusButton.setSize(200,30);
         roomStatusButton.setOpaque(true);
         roomStatusButton.setBorderPainted(false);
@@ -139,7 +135,7 @@ public class Reception extends JFrame implements ActionListener{
         panel.add(roomStatusButton);
 
         pickupButton = new JButton("Pickup Service");
-        pickupButton.setLocation(10,390);
+        pickupButton.setLocation(10,290);
         pickupButton.setSize(200,30);
         pickupButton.setOpaque(true);
         pickupButton.setBorderPainted(false);
@@ -148,16 +144,17 @@ public class Reception extends JFrame implements ActionListener{
         panel.add(pickupButton);
 
         searchRoomButton = new JButton("Search Room");
-        searchRoomButton.setLocation(10,430);
+        searchRoomButton.setLocation(10,330);
         searchRoomButton.setSize(200,30);
         searchRoomButton.setOpaque(true);
         searchRoomButton.setBorderPainted(false);
         searchRoomButton.setBackground(Color.decode("#424554"));
         searchRoomButton.setForeground(Color.WHITE);
+        searchRoomButton.addActionListener(this);
         panel.add(searchRoomButton);
 
         logoutButton =  new JButton("Log out");
-        logoutButton.setLocation(10,470);
+        logoutButton.setLocation(10,450);
         logoutButton.setSize(200,30);
         logoutButton.setOpaque(true);
         logoutButton.setBorderPainted(false);
@@ -177,6 +174,10 @@ public class Reception extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    // public static void main(String[] args) {
+    //     new Reception();
+    // }
+
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getActionCommand().equals("Add Employees")){
@@ -194,6 +195,18 @@ public class Reception extends JFrame implements ActionListener{
         } else if(e.getSource() == newCustomerButton){
             setVisible(false);
             new AddCustomer();
+        } else if(e.getSource() == roomButton){
+            setVisible(false);
+            new AllRooms();
+        } else if(e.getSource() == customerButton){
+            setVisible(false);
+            new Customers();
+        } else if(e.getSource() == checkoutButton){
+            setVisible(false);
+            new Checkout();
+        } else if(e.getSource() == searchRoomButton){
+            setVisible(false);
+            new SearchRoom();
         }
     }
 }

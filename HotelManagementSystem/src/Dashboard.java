@@ -4,11 +4,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.Timer;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Dashboard extends JFrame implements ActionListener{
     public Dashboard(){
@@ -25,6 +28,51 @@ public class Dashboard extends JFrame implements ActionListener{
         welcome.setFont(new Font("serif", Font.BOLD, 50));
         welcome.setForeground(Color.decode("#32343d"));
         background.add(welcome);
+
+        JLabel clock = new JLabel();
+        clock.setLocation(930,530);
+        clock.setSize(500,100);
+        clock.setFont(new Font("serif", Font.BOLD, 50));
+        clock.setForeground(Color.decode("#000000"));
+        background.add(clock);
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the current time
+                Date currentTime = new Date();
+                
+                // Format the time as HH:mm:ss
+                SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
+                String formattedTime = dateFormat.format(currentTime);
+                
+                // Update the JLabel with the formatted time
+                clock.setText(formattedTime);
+            }
+        });
+        timer.start();
+
+        JLabel date = new JLabel();
+        date.setLocation(960,600);
+        date.setSize(500,100);
+        date.setFont(new Font("serif", Font.BOLD, 50));
+        date.setForeground(Color.decode("#00000"));
+        background.add(date);
+
+        Timer timer2 = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the current time
+                Date currentTime = new Date();
+                
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                String formattedTime = dateFormat.format(currentTime);
+                
+                // Update the JLabel with the formatted time
+                date.setText(formattedTime);
+            }
+        });
+        timer2.start();
         
         JMenuBar menuBar = new JMenuBar();
         
@@ -59,10 +107,6 @@ public class Dashboard extends JFrame implements ActionListener{
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     } 
-
-    public static void main(String[] args) {
-        new Dashboard();
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

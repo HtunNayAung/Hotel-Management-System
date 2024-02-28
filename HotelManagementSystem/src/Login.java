@@ -103,6 +103,7 @@ public class Login extends JFrame implements ActionListener{
                 } else{
                     JOptionPane.showMessageDialog(null, "Invalid password or username");
                     setVisible(false);
+                    new Login();
                 }
                 dbconnect.con.close();
                 
@@ -110,7 +111,8 @@ public class Login extends JFrame implements ActionListener{
                 e1.printStackTrace();
             }
         } else if(e.getSource() == cancelButton){
-            
+            setVisible(false);
+            new HotelManagementSystem();
         }
     }
 }

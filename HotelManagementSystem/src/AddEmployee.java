@@ -1,7 +1,9 @@
+import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
@@ -23,11 +25,12 @@ import com.toedter.calendar.JDateChooser;
 
 public class AddEmployee extends JFrame implements ActionListener{
     JTextField nameField, ageField, salaryField, phoneField, emailField;
-    JButton submitButton;
+    JButton submitButton, backButton;
     JRadioButton maleRBtn, femaleRBtn;
     JDateChooser calendar;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    JComboBox jobCBox ;
+    JComboBox jobCBox;
+    Choice departmentBox;
     public AddEmployee(){
         setSize(1280, 720);
         setLocation(100,100);
@@ -68,7 +71,7 @@ public class AddEmployee extends JFrame implements ActionListener{
 
         JPanel panel = new JPanel();
         panel.setLocation(400, 100);
-        panel.setSize(490, 450);
+        panel.setSize(490, 500);
         panel.setLayout(null);
 
         //name
@@ -168,8 +171,34 @@ public class AddEmployee extends JFrame implements ActionListener{
         emailField.setSize(200, 30);
         panel.add(emailField);
 
+
+        //department
+        JLabel departmentLabel = new JLabel("Department");
+        departmentLabel.setLocation(75, 380);
+        departmentLabel.setSize(120, 30);
+        departmentLabel.setFont(new Font("serif", Font.PLAIN, 19));
+        panel.add(departmentLabel);
+
+        departmentBox = new Choice();
+        try {   
+            Dbconnect dbconnect = new Dbconnect();
+            Statement stmt = dbconnect.con.createStatement();
+            String query = "select * from department";
+            ResultSet resultSet = stmt.executeQuery(query);
+            while(resultSet.next()){
+                departmentBox.add(resultSet.getString("name"));
+                
+            }
+            dbconnect.con.close();
+        } catch (Exception e) {
+            
+        }
+        departmentBox.setLocation(180, 380);
+        departmentBox.setSize(180, 30);
+        panel.add(departmentBox);
+
         submitButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Submit</span></html>");
-        submitButton.setLocation(175,390);
+        submitButton.setLocation(90,440);
         submitButton.setSize(120,35);
         submitButton.setOpaque(true);
         submitButton.setBorderPainted(false);
@@ -178,11 +207,23 @@ public class AddEmployee extends JFrame implements ActionListener{
         submitButton.addActionListener(this);
         panel.add(submitButton);
 
+        backButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Back</span></html>");
+        backButton.setLocation(250,440);
+        backButton.setSize(120,35);
+        backButton.setOpaque(true);
+        backButton.setBorderPainted(false);
+        backButton.setBackground(Color.decode("#424554"));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(this);
+        panel.add(backButton);
+
+
 
 
         background.add(panel);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     @Override
@@ -199,10 +240,13 @@ public class AddEmployee extends JFrame implements ActionListener{
         } else if(e.getActionCommand().equals("    Reception    ")){
             setVisible(false);
             new Reception();
+        } else if(e.getSource() == backButton){
+            setVisible(false);
+            new Reception();
         } else if(e.getSource() == submitButton){
             String name = nameField.getText();
 
-            String dob = calendar.getDate()==null ? "" : sdf.format(calendar.getDate());
+            String dob = calendar.getDate()== null ? "" : sdf.format(calendar.getDate());
             
             double salary = 0;
             if(!salaryField.getText().equals("")){
@@ -216,7 +260,7 @@ public class AddEmployee extends JFrame implements ActionListener{
             
             boolean emailError = true;
             String email = "";
-            if(emailField.getText().contains("@") && emailField.getText().contains(".com")){
+            if(emailField.getText().contains("@imperial.com.au")){
                 email = emailField.getText();
                 emailError = false;
             }
@@ -228,8 +272,10 @@ public class AddEmployee extends JFrame implements ActionListener{
                 gender = "female";
             }
             String job = (String)jobCBox.getSelectedItem();
+            String department = departmentBox.getSelectedItem();
             if(name != "" && dob != "" && salary != 0 && phone != "" && email != "" && job != ""){
-                String query = "insert into employee values('" + name + "','" + dob + "','" + gender + "','" + job + "','" + salary + "','" + phone + "','" + email + "');";
+                String query = "INSERT INTO employee (name, dob, gender, job, salary, phone, email, department) " +
+                "VALUES ('" + name + "','" + dob + "','" + gender + "','" + job + "','" + salary + "','" + phone + "','" + email + "','" + department + "')";
                 Dbconnect dbconnect = new Dbconnect();
                 try{
                     
@@ -238,6 +284,7 @@ public class AddEmployee extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(null, "Employee added successfully");
                     setVisible(false);
                     dbconnect.con.close();
+                    new AddEmployee();
                 } catch (Exception err){
                     System.out.println(err);
                 }
@@ -248,9 +295,6 @@ public class AddEmployee extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "All fields must be filled");
 
             }
-        }
-
-        
-
+        } 
     }
 }
