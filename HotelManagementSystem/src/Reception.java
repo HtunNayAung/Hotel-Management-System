@@ -116,26 +116,27 @@ public class Reception extends JFrame implements ActionListener{
         checkoutButton.addActionListener(this);
         panel.add(checkoutButton);
 
-        updateStatusButton = new JButton("Update Availability");
-        updateStatusButton.setLocation(10,210);
-        updateStatusButton.setSize(200,30);
-        updateStatusButton.setOpaque(true);
-        updateStatusButton.setBorderPainted(false);
-        updateStatusButton.setBackground(Color.decode("#424554"));
-        updateStatusButton.setForeground(Color.WHITE);
-        panel.add(updateStatusButton);
+        // updateStatusButton = new JButton("Update Availability");
+        // updateStatusButton.setLocation(10,210);
+        // updateStatusButton.setSize(200,30);
+        // updateStatusButton.setOpaque(true);
+        // updateStatusButton.setBorderPainted(false);
+        // updateStatusButton.setBackground(Color.decode("#424554"));
+        // updateStatusButton.setForeground(Color.WHITE);
+        // panel.add(updateStatusButton);
 
         roomStatusButton = new JButton("Update Room Status");
-        roomStatusButton.setLocation(10,250);
+        roomStatusButton.setLocation(10,210);
         roomStatusButton.setSize(200,30);
         roomStatusButton.setOpaque(true);
         roomStatusButton.setBorderPainted(false);
         roomStatusButton.setBackground(Color.decode("#424554"));
         roomStatusButton.setForeground(Color.WHITE);
+        roomStatusButton.addActionListener(this);
         panel.add(roomStatusButton);
 
         pickupButton = new JButton("Pickup Service");
-        pickupButton.setLocation(10,290);
+        pickupButton.setLocation(10,250);
         pickupButton.setSize(200,30);
         pickupButton.setOpaque(true);
         pickupButton.setBorderPainted(false);
@@ -144,7 +145,7 @@ public class Reception extends JFrame implements ActionListener{
         panel.add(pickupButton);
 
         searchRoomButton = new JButton("Search Room");
-        searchRoomButton.setLocation(10,330);
+        searchRoomButton.setLocation(10,290);
         searchRoomButton.setSize(200,30);
         searchRoomButton.setOpaque(true);
         searchRoomButton.setBorderPainted(false);
@@ -160,6 +161,7 @@ public class Reception extends JFrame implements ActionListener{
         logoutButton.setBorderPainted(false);
         logoutButton.setBackground(Color.decode("#424554"));
         logoutButton.setForeground(Color.WHITE);
+        logoutButton.addActionListener(this);
         panel.add(logoutButton);
 
 
@@ -207,6 +209,12 @@ public class Reception extends JFrame implements ActionListener{
         } else if(e.getSource() == searchRoomButton){
             setVisible(false);
             new SearchRoom();
+        } else if(e.getSource() == roomStatusButton){
+            setVisible(false);
+            new UpdateRoom();
+        } else if(e.getSource() == logoutButton){
+            setVisible(false);
+            new Login();
         }
     }
 }

@@ -105,7 +105,7 @@ public class Checkout extends JFrame implements ActionListener{
         checkoutButton.addActionListener(this);
         panel.add(checkoutButton);
 
-        //for checkout button
+        //for complete checkout button
         completeCheckoutButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Complete Checkout</span></html>");
         completeCheckoutButton.setLocation(100,420);
         completeCheckoutButton.setSize(120,40);
@@ -117,7 +117,7 @@ public class Checkout extends JFrame implements ActionListener{
 
 
 
-        //for checkout button
+        //for back button
         backButton = new JButton("<html><span style='font-size:14px; font-family: serif'>Back</span></html>");
         backButton.setLocation(250,420);
         backButton.setSize(120,30);
@@ -164,10 +164,6 @@ public class Checkout extends JFrame implements ActionListener{
         background.add(panel);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    public static void main(String[] args) {
-        new Checkout();
     }
 
     @SuppressWarnings("deprecation")
