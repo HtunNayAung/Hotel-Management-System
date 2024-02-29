@@ -19,6 +19,7 @@ public class Login extends JFrame implements ActionListener{
     JTextField nameField;
     JPasswordField pwdField;
     JButton loginButton, cancelButton;
+    boolean isAdmin = false;
     public Login(){
         setSize(1280, 720);
         setLocation(100,100);
@@ -98,11 +99,14 @@ public class Login extends JFrame implements ActionListener{
                 Statement stmt = dbconnect.con.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query);
                 if(resultSet.next()){
-                    setVisible(false);
-                    new Dashboard();
+                    if(username.equals("admin")){
+                        isAdmin = true;
+                    }
+                    dispose();
+                    new Dashboard(isAdmin);
                 } else{
                     JOptionPane.showMessageDialog(null, "Invalid password or username");
-                    setVisible(false);
+                    dispose();
                     new Login();
                 }
                 dbconnect.con.close();
@@ -111,7 +115,7 @@ public class Login extends JFrame implements ActionListener{
                 e1.printStackTrace();
             }
         } else if(e.getSource() == cancelButton){
-            setVisible(false);
+            dispose();
             new HotelManagementSystem();
         }
     }

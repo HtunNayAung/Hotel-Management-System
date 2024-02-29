@@ -26,12 +26,13 @@ public class Checkout extends JFrame implements ActionListener{
     JLabel roomNumberLabel, label1 , label2, label3, billLabel, checkinLabel, checkoutLabel;
     JPanel panel;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    public Checkout(){
+    boolean isAdmin = false;
+    public Checkout(boolean isAdmin){
+        this.isAdmin = isAdmin;
         setSize(1280, 720);
         setLocation(100,100);
 
-        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard.jpeg"));
+        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard1.png"));
         background = new JLabel(backgroundImg);
         add(background);
         
@@ -49,22 +50,27 @@ public class Checkout extends JFrame implements ActionListener{
         reception.addActionListener(this);
         hotelMng.add(reception);
 
-        JMenu admin =  new JMenu("          Admin          ");
-        admin.setForeground(Color.BLACK);
-        menuBar.add(admin);
+        if(isAdmin){
+            JMenu admin =  new JMenu("          Admin          ");
+            admin.setForeground(Color.BLACK);
+            menuBar.add(admin);
 
-        JMenuItem employees = new JMenuItem("Add Employees");
-        employees.addActionListener(this);
-        admin.add(employees);
+            JMenuItem employees = new JMenuItem("Add Employees");
+            employees.addActionListener(this);
+            admin.add(employees);
 
-        JMenuItem rooms = new JMenuItem("Add Rooms");
-        rooms.addActionListener(this);
-        admin.add(rooms);
+            JMenuItem rooms = new JMenuItem("Add Rooms");
+            rooms.addActionListener(this);
+            admin.add(rooms);
 
-        JMenuItem drivers = new JMenuItem("Add Drivers");
-        drivers.addActionListener(this);
-        admin.add(drivers);
+            JMenuItem showemployees = new JMenuItem("Employees");
+            showemployees.addActionListener(this);
+            admin.add(showemployees);
 
+            JMenuItem showDepts = new JMenuItem("Departments");
+            showDepts.addActionListener(this);
+            admin.add(showDepts);
+        }
         panel = new JPanel();
         panel.setLocation(400, 100);
         panel.setSize(490, 480);
@@ -170,20 +176,23 @@ public class Checkout extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getActionCommand().equals("Add Employees")){
-            setVisible(false);
-            new AddEmployee();
+            dispose();
+            new AddEmployee(isAdmin);
         } else if(e.getActionCommand().equals("Add Rooms")){
-            setVisible(false);
-            new AddRoom();
-        }  else if(e.getActionCommand().equals("Add Drivers")){
-            setVisible(false);
-            new PickUpService();
-        } else if(e.getActionCommand().equals("    Reception    ")){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new AddRoom(isAdmin);
+        } else if(e.getActionCommand().equals("Employees")){
+            dispose();
+            new Employees(isAdmin);
+        } else if (e.getActionCommand().equals("Departments")){
+            dispose();
+            new Departments(isAdmin);
+        }  else if(e.getActionCommand().equals("    Reception    ")){
+            dispose();
+            new Reception(isAdmin);
         } else if(e.getSource() == backButton){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new Reception(isAdmin);
         } else if(e.getSource() == checkoutButton){
             label1.setText("Room Number : " + roomNumberBox.getSelectedItem());
             panel.add(billLabel);
@@ -218,7 +227,6 @@ public class Checkout extends JFrame implements ActionListener{
 
                     // Calculate the duration of stay in milliseconds
                 long durationInMillis = checkoutDate.getTime() - checkinDate.getTime();
-                JOptionPane.showMessageDialog(null, durationInMillis);
 
                 if (checkoutDate.getHours() >= 12) {
                     // If checkout is after 12 PM, add one more day to the duration
@@ -261,8 +269,8 @@ public class Checkout extends JFrame implements ActionListener{
                 stmt.executeUpdate(query4);
 
                 JOptionPane.showMessageDialog(null, "Checkout completed");
-                setVisible(false);
-                new Checkout();
+                dispose();
+                new Checkout(isAdmin);
 
                 dbconnect.con.close();
             } catch (Exception err) {

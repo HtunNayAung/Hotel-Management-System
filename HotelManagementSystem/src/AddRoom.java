@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -20,11 +21,13 @@ public class AddRoom extends JFrame implements ActionListener{
     JTextField roomNumField, priceField;
     JComboBox availCBox, cleanCBox, roomTypeCBox;
     JButton addRoomButton, cancelButton;
-    public AddRoom(){
+    boolean isAdmin = false;
+    public AddRoom(boolean isAdmin){
+        this.isAdmin = isAdmin;
         setSize(1280, 720);
         setLocation(100,100);
 
-        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard.jpeg"));
+        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard1.png"));
         JLabel background= new JLabel(backgroundImg);
         add(background);
         
@@ -42,21 +45,27 @@ public class AddRoom extends JFrame implements ActionListener{
         reception.addActionListener(this);
         hotelMng.add(reception);
 
-        JMenu admin =  new JMenu("          Admin          ");
-        admin.setForeground(Color.BLACK);
-        menuBar.add(admin);
+        if(isAdmin){
+            JMenu admin =  new JMenu("          Admin          ");
+            admin.setForeground(Color.BLACK);
+            menuBar.add(admin);
 
-        JMenuItem employees = new JMenuItem("Add Employees");
-        employees.addActionListener(this);
-        admin.add(employees);
+            JMenuItem employees = new JMenuItem("Add Employees");
+            employees.addActionListener(this);
+            admin.add(employees);
 
-        JMenuItem rooms = new JMenuItem("Add Rooms");
-        rooms.addActionListener(this);
-        admin.add(rooms);
+            JMenuItem rooms = new JMenuItem("Add Rooms");
+            rooms.addActionListener(this);
+            admin.add(rooms);
 
-        JMenuItem drivers = new JMenuItem("Add Drivers");
-        drivers.addActionListener(this);
-        admin.add(drivers);
+            JMenuItem showemployees = new JMenuItem("Employees");
+            showemployees.addActionListener(this);
+            admin.add(showemployees);
+
+            JMenuItem showDepts = new JMenuItem("Departments");
+            showDepts.addActionListener(this);
+            admin.add(showDepts);
+        }
 
         JPanel panel = new JPanel();
         panel.setLocation(400, 100);
@@ -160,17 +169,20 @@ public class AddRoom extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Add Employees")){
-            setVisible(false);
-            new AddEmployee();
+            dispose();
+            new AddEmployee(isAdmin);
         } else if(e.getActionCommand().equals("Add Rooms")){
-            setVisible(false);
-            new AddRoom();
-        }  else if(e.getActionCommand().equals("Add Drivers")){
-            setVisible(false);
-            new PickUpService();
-        } else if(e.getActionCommand().equals("    Reception    ")){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new AddRoom(isAdmin);
+        } else if(e.getActionCommand().equals("Employees")){
+            dispose();
+            new Employees(isAdmin);
+        } else if (e.getActionCommand().equals("Departments")){
+            dispose();
+            new Departments(isAdmin);
+        }  else if(e.getActionCommand().equals("    Reception    ")){
+            dispose();
+            new Reception(isAdmin);
         } else if(e.getSource() == addRoomButton){
             String roomNum = roomNumField.getText();
             String availability = (String)availCBox.getSelectedItem();
@@ -192,9 +204,11 @@ public class AddRoom extends JFrame implements ActionListener{
                     Statement stmt = dbconnect.con.createStatement();
                     stmt.executeUpdate(query);
                     JOptionPane.showMessageDialog(null, "Room added successfully");
-                    new AddRoom();
+                    new AddRoom(isAdmin);
                     dbconnect.con.close();
-                } catch(Exception err){
+                } catch (SQLIntegrityConstraintViolationException err){
+                    JOptionPane.showMessageDialog(null, "Duplicate entry for room number");
+                }  catch(Exception err){
                     System.err.println(err);
                 }
                 
@@ -202,7 +216,7 @@ public class AddRoom extends JFrame implements ActionListener{
         }
 
         } else if(e.getSource() == cancelButton){
-            new Dashboard();
+            new Dashboard(isAdmin);
         }
 
         

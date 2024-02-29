@@ -13,11 +13,13 @@ import javax.swing.JPanel;
 
 public class Reception extends JFrame implements ActionListener{
     JButton newCustomerButton, roomButton, departmentButton, employeesButton, customerButton, checkoutButton, updateStatusButton, roomStatusButton, pickupButton, searchRoomButton, logoutButton;
-    public Reception(){
+    boolean isAdmin = false;
+    public Reception(boolean isAdmin){
+        this.isAdmin = isAdmin;
         setSize(1280, 720);
         setLocation(100,100);
 
-        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard.jpeg"));
+        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard1.png"));
         JLabel background= new JLabel(backgroundImg);
         add(background);
         
@@ -35,21 +37,27 @@ public class Reception extends JFrame implements ActionListener{
         reception.addActionListener(this);
         hotelMng.add(reception);
 
-        JMenu admin =  new JMenu("          Admin          ");
-        admin.setForeground(Color.BLACK);
-        menuBar.add(admin);
+        if(isAdmin){
+            JMenu admin =  new JMenu("          Admin          ");
+            admin.setForeground(Color.BLACK);
+            menuBar.add(admin);
 
-        JMenuItem employees = new JMenuItem("Add Employees");
-        employees.addActionListener(this);
-        admin.add(employees);
+            JMenuItem employees = new JMenuItem("Add Employees");
+            employees.addActionListener(this);
+            admin.add(employees);
 
-        JMenuItem rooms = new JMenuItem("Add Rooms");
-        rooms.addActionListener(this);
-        admin.add(rooms);
+            JMenuItem rooms = new JMenuItem("Add Rooms");
+            rooms.addActionListener(this);
+            admin.add(rooms);
 
-        JMenuItem drivers = new JMenuItem("Add Drivers");
-        drivers.addActionListener(this);
-        admin.add(drivers);
+            JMenuItem showemployees = new JMenuItem("Employees");
+            showemployees.addActionListener(this);
+            admin.add(showemployees);
+
+            JMenuItem showDepts = new JMenuItem("Departments");
+            showDepts.addActionListener(this);
+            admin.add(showDepts);
+        }
 
         JPanel panel = new JPanel();
         panel.setLocation(250, 100);
@@ -76,26 +84,6 @@ public class Reception extends JFrame implements ActionListener{
         roomButton.addActionListener(this);
         panel.add(roomButton);
 
-        // departmentButton = new JButton("Departments");
-        // departmentButton.setLocation(10,110);
-        // departmentButton.setSize(200,30);
-        // departmentButton.setOpaque(true);
-        // departmentButton.setBorderPainted(false);
-        // departmentButton.setBackground(Color.decode("#424554"));
-        // departmentButton.setForeground(Color.WHITE);
-        // departmentButton.addActionListener(this);
-        // panel.add(departmentButton);
-
-        // employeesButton = new JButton("Employees");
-        // employeesButton.setLocation(10,150);
-        // employeesButton.setSize(200,30);
-        // employeesButton.setOpaque(true);
-        // employeesButton.setBorderPainted(false);
-        // employeesButton.setBackground(Color.decode("#424554"));
-        // employeesButton.setForeground(Color.WHITE);
-        // employeesButton.addActionListener(this);
-        // panel.add(employeesButton);
-
         customerButton = new JButton("Customer Info");
         customerButton.setLocation(10,130);
         customerButton.setSize(200,30);
@@ -116,15 +104,6 @@ public class Reception extends JFrame implements ActionListener{
         checkoutButton.addActionListener(this);
         panel.add(checkoutButton);
 
-        // updateStatusButton = new JButton("Update Availability");
-        // updateStatusButton.setLocation(10,210);
-        // updateStatusButton.setSize(200,30);
-        // updateStatusButton.setOpaque(true);
-        // updateStatusButton.setBorderPainted(false);
-        // updateStatusButton.setBackground(Color.decode("#424554"));
-        // updateStatusButton.setForeground(Color.WHITE);
-        // panel.add(updateStatusButton);
-
         roomStatusButton = new JButton("Update Room Status");
         roomStatusButton.setLocation(10,210);
         roomStatusButton.setSize(200,30);
@@ -135,17 +114,9 @@ public class Reception extends JFrame implements ActionListener{
         roomStatusButton.addActionListener(this);
         panel.add(roomStatusButton);
 
-        pickupButton = new JButton("Pickup Service");
-        pickupButton.setLocation(10,250);
-        pickupButton.setSize(200,30);
-        pickupButton.setOpaque(true);
-        pickupButton.setBorderPainted(false);
-        pickupButton.setBackground(Color.decode("#424554"));
-        pickupButton.setForeground(Color.WHITE);
-        panel.add(pickupButton);
 
         searchRoomButton = new JButton("Search Room");
-        searchRoomButton.setLocation(10,290);
+        searchRoomButton.setLocation(10,250);
         searchRoomButton.setSize(200,30);
         searchRoomButton.setOpaque(true);
         searchRoomButton.setBorderPainted(false);
@@ -176,44 +147,43 @@ public class Reception extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    // public static void main(String[] args) {
-    //     new Reception();
-    // }
-
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getActionCommand().equals("Add Employees")){
-            setVisible(false);
-            new AddEmployee();
+            dispose();
+            new AddEmployee(isAdmin);
         } else if(e.getActionCommand().equals("Add Rooms")){
-            setVisible(false);
-            new AddRoom();
-        }  else if(e.getActionCommand().equals("Add Drivers")){
-            setVisible(false);
-            new PickUpService();
-        } else if(e.getActionCommand().equals("    Reception    ")){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new AddRoom(isAdmin);
+        } else if(e.getActionCommand().equals("Employees")){
+            dispose();
+            new Employees(isAdmin);
+        } else if (e.getActionCommand().equals("Departments")){
+            dispose();
+            new Departments(isAdmin);
+        }  else if(e.getActionCommand().equals("    Reception    ")){
+            dispose();
+            new Reception(isAdmin);
         } else if(e.getSource() == newCustomerButton){
-            setVisible(false);
-            new AddCustomer();
+            dispose();
+            new AddCustomer(isAdmin);
         } else if(e.getSource() == roomButton){
-            setVisible(false);
-            new AllRooms();
+            dispose();
+            new AllRooms(isAdmin);
         } else if(e.getSource() == customerButton){
-            setVisible(false);
-            new Customers();
+            dispose();
+            new Customers(isAdmin);
         } else if(e.getSource() == checkoutButton){
-            setVisible(false);
-            new Checkout();
+            dispose();
+            new Checkout(isAdmin);
         } else if(e.getSource() == searchRoomButton){
-            setVisible(false);
-            new SearchRoom();
+            dispose();
+            new SearchRoom(isAdmin);
         } else if(e.getSource() == roomStatusButton){
-            setVisible(false);
-            new UpdateRoom();
+            dispose();
+            new UpdateRoom(isAdmin);
         } else if(e.getSource() == logoutButton){
-            setVisible(false);
+            dispose();
             new Login();
         }
     }

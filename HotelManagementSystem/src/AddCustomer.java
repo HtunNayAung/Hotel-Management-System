@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,11 +30,13 @@ public class AddCustomer extends JFrame implements ActionListener{
     Choice allocatedRoomBox;
     JButton addButton, cancelButton;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public AddCustomer(){
+    boolean isAdmin = false;
+    public AddCustomer(boolean isAdmin){
+        this.isAdmin = isAdmin;
         setSize(1280, 720);
         setLocation(100,100);
 
-        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard.jpeg"));
+        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard1.png"));
         JLabel background= new JLabel(backgroundImg);
         add(background);
         
@@ -51,21 +54,27 @@ public class AddCustomer extends JFrame implements ActionListener{
         reception.addActionListener(this);
         hotelMng.add(reception);
 
-        JMenu admin =  new JMenu("          Admin          ");
-        admin.setForeground(Color.BLACK);
-        menuBar.add(admin);
+        if(isAdmin){
+            JMenu admin =  new JMenu("          Admin          ");
+            admin.setForeground(Color.BLACK);
+            menuBar.add(admin);
 
-        JMenuItem employees = new JMenuItem("Add Employees");
-        employees.addActionListener(this);
-        admin.add(employees);
+            JMenuItem employees = new JMenuItem("Add Employees");
+            employees.addActionListener(this);
+            admin.add(employees);
 
-        JMenuItem rooms = new JMenuItem("Add Rooms");
-        rooms.addActionListener(this);
-        admin.add(rooms);
+            JMenuItem rooms = new JMenuItem("Add Rooms");
+            rooms.addActionListener(this);
+            admin.add(rooms);
 
-        JMenuItem drivers = new JMenuItem("Add Drivers");
-        drivers.addActionListener(this);
-        admin.add(drivers);
+            JMenuItem showemployees = new JMenuItem("Employees");
+            showemployees.addActionListener(this);
+            admin.add(showemployees);
+
+            JMenuItem showDepts = new JMenuItem("Departments");
+            showDepts.addActionListener(this);
+            admin.add(showDepts);
+        }
 
         JPanel panel = new JPanel();
         panel.setLocation(400, 100);
@@ -221,17 +230,20 @@ public class AddCustomer extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getActionCommand().equals("Add Employees")){
-            setVisible(false);
-            new AddEmployee();
+            dispose();
+            new AddEmployee(isAdmin);
         } else if(e.getActionCommand().equals("Add Rooms")){
-            setVisible(false);
-            new AddRoom();
-        }  else if(e.getActionCommand().equals("Add Drivers")){
-            setVisible(false);
-            new PickUpService();
+            dispose();
+            new AddRoom(isAdmin);
+        }  else if(e.getActionCommand().equals("Employees")){
+            dispose();
+            new Employees(isAdmin);
+        } else if (e.getActionCommand().equals("Departments")){
+            dispose();
+            new Departments(isAdmin);
         } else if(e.getActionCommand().equals("    Reception    ")){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new Reception(isAdmin);
         } else if(e.getSource() == addButton){
             String name = nameField.getText();
             String idType = (String)idCBox.getSelectedItem();
@@ -257,9 +269,11 @@ public class AddCustomer extends JFrame implements ActionListener{
                     stmt.executeUpdate(availUpdateQuery);
                     stmt.executeUpdate(stayQuery);
                     JOptionPane.showMessageDialog(null, "New customer added successfully");
-                    setVisible(false);
-                    new AddCustomer();
+                    dispose();
+                    new AddCustomer(isAdmin);
                     dbconnect.con.close();
+                } catch (SQLIntegrityConstraintViolationException err){
+                    JOptionPane.showMessageDialog(null, "Duplicate entry for customer name and idType");
                 } catch (Exception err) {
                     System.err.println(err);
                 }
@@ -268,8 +282,8 @@ public class AddCustomer extends JFrame implements ActionListener{
             }
             
         } else if(e.getSource() == cancelButton){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new Reception(isAdmin);
         }
     }
 }

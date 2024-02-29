@@ -31,11 +31,13 @@ public class AddEmployee extends JFrame implements ActionListener{
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     JComboBox jobCBox;
     Choice departmentBox;
-    public AddEmployee(){
+    boolean isAdmin = false;
+    public AddEmployee(boolean isAdmin){
+        this.isAdmin = isAdmin;
         setSize(1280, 720);
         setLocation(100,100);
 
-        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard.jpeg"));
+        ImageIcon backgroundImg =  new ImageIcon(ClassLoader.getSystemResource("images/dashboard1.png"));
         JLabel background= new JLabel(backgroundImg);
         add(background);
         
@@ -53,21 +55,27 @@ public class AddEmployee extends JFrame implements ActionListener{
         reception.addActionListener(this);
         hotelMng.add(reception);
 
-        JMenu admin =  new JMenu("          Admin          ");
-        admin.setForeground(Color.BLACK);
-        menuBar.add(admin);
+        if(isAdmin){
+            JMenu admin =  new JMenu("          Admin          ");
+            admin.setForeground(Color.BLACK);
+            menuBar.add(admin);
 
-        JMenuItem employees = new JMenuItem("Add Employees");
-        employees.addActionListener(this);
-        admin.add(employees);
+            JMenuItem employees = new JMenuItem("Add Employees");
+            employees.addActionListener(this);
+            admin.add(employees);
 
-        JMenuItem rooms = new JMenuItem("Add Rooms");
-        rooms.addActionListener(this);
-        admin.add(rooms);
+            JMenuItem rooms = new JMenuItem("Add Rooms");
+            rooms.addActionListener(this);
+            admin.add(rooms);
 
-        JMenuItem drivers = new JMenuItem("Add Drivers");
-        drivers.addActionListener(this);
-        admin.add(drivers);
+            JMenuItem showemployees = new JMenuItem("Employees");
+            showemployees.addActionListener(this);
+            admin.add(showemployees);
+
+            JMenuItem showDepts = new JMenuItem("Departments");
+            showDepts.addActionListener(this);
+            admin.add(showDepts);
+        }
 
         JPanel panel = new JPanel();
         panel.setLocation(400, 100);
@@ -229,20 +237,23 @@ public class AddEmployee extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Add Employees")){
-            setVisible(false);
-            new AddEmployee();
+            dispose();
+            new AddEmployee(isAdmin);
         } else if(e.getActionCommand().equals("Add Rooms")){
-            setVisible(false);
-            new AddRoom();
-        }  else if(e.getActionCommand().equals("Add Drivers")){
-            setVisible(false);
-            new PickUpService();
-        } else if(e.getActionCommand().equals("    Reception    ")){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new AddRoom(isAdmin);
+        } else if(e.getActionCommand().equals("Employees")){
+            dispose();
+            new Employees(isAdmin);
+        } else if (e.getActionCommand().equals("Departments")){
+            dispose();
+            new Departments(isAdmin);
+        }  else if(e.getActionCommand().equals("    Reception    ")){
+            dispose();
+            new Reception(isAdmin);
         } else if(e.getSource() == backButton){
-            setVisible(false);
-            new Reception();
+            dispose();
+            new Reception(isAdmin);
         } else if(e.getSource() == submitButton){
             String name = nameField.getText();
 
@@ -282,9 +293,9 @@ public class AddEmployee extends JFrame implements ActionListener{
                     Statement stmt = dbconnect.con.createStatement();
                     stmt.executeUpdate(query);
                     JOptionPane.showMessageDialog(null, "Employee added successfully");
-                    setVisible(false);
+                    dispose();
                     dbconnect.con.close();
-                    new AddEmployee();
+                    new AddEmployee(isAdmin);
                 } catch (Exception err){
                     System.out.println(err);
                 }
